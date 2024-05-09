@@ -49,13 +49,9 @@
                                     class="text-left"
                                     groups="base.group_multi_currency"
                                 >Amount in Currency</th>
+                                <th name="th_tax_ids" class="text-left">Taxes</th>
                                 <th name="th_debit" class="text-left">Debit</th>
                                 <th name="th_credit" class="text-left">Credit</th>
-                                <th
-                                    name="th_tax_id"
-                                    class="text-left"
-                                >Originator Tax</th>
-                                <th name="th_tax_ids" class="text-left">Taxes</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -89,6 +85,14 @@
                                             />
                                         </t>
                                     </td>
+                                    <td
+                                        t-attf-class="text-left {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}"
+                                    >
+                                        <span
+                                            t-out="', '.join(map(lambda x: (x.description or x.name), line.tax_ids))"
+                                            id="line_tax_ids"
+                                        />
+                                    </td>
                                     <td name='tb_debit'>
                                         <span
                                             t-out="line.debit"
@@ -101,20 +105,6 @@
                                             t-options='{"widget": "monetary", "display_currency": line.company_currency_id}'
                                         />
                                     </td>
-                                    <td name='tb_originator_tax'>
-                                        <span
-                                            class="text-nowrap"
-                                            t-out="line.tax_line_id.name"
-                                        />
-                                    </td>
-                                    <td
-                                        t-attf-class="text-left {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}"
-                                    >
-                                        <span
-                                            t-out="', '.join(map(lambda x: (x.description or x.name), line.tax_ids))"
-                                            id="line_tax_ids"
-                                        />
-                                    </td>
                                 </tr>
                             </t>
                         </tbody>
@@ -122,15 +112,12 @@
                             <tr>
                                 <td name='tf_account' />
                                 <td name='tf_partner' />
-                                <td name='tf_line_name' />
-                                <td
-                                    name='tf_analytic'
-                                    groups="analytic.group_analytic_accounting"
-                                />
+                                <td name='tf_line_name' />   
                                 <td
                                     name='tf_amount_currency'
                                     groups="base.group_multi_currency"
                                 />
+                                <td name='tb_taxes' />
                                 <td name='tf_debit'>
                                     <span
                                         t-out="total_debit"
@@ -142,9 +129,7 @@
                                         t-out="total_credit"
                                         t-options='{"widget": "monetary", "display_currency": o.company_currency_id}'
                                     />
-                                </td>
-                                <td name='tf_originator_tax' />
-                                <td name='tb_taxes' />
+                                </td> 
                             </tr>
                         </tfooter>
                     </table>
